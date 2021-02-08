@@ -13,15 +13,19 @@ public class PlayerController : MonoBehaviour, @RollABallControls.IPlayerActions
     private int count;
     public Text countText;
     public Text winText;
-
+    public Text livesText;
+    private int lives;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
+        lives = 3;
         countText.text = "Count: " + count.ToString();
         winText.text = "";
+        livesText.text = "Lives: " + lives.ToString();
+
     }
 
     public void OnEnable()
@@ -56,14 +60,33 @@ public class PlayerController : MonoBehaviour, @RollABallControls.IPlayerActions
             count = count + 1;
             SetCountText();
         }
+        else if (other.gameObject.CompareTag("Enemy"))
+        {
+            other.gameObject.SetActive(false);
+            lives = lives - 1;
+            SetLivesText();
+        }
+
     }
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if (count >= 12)
+        if (count == 12)
+        {
+            transform.position = new Vector3(50.0f, 0.0f, 50.0f);
+        }
+        else if (count >= 20)
         {
             winText.text = "Jackpot! Game created by Logan Rich";
         }
     }
-
+    void SetLivesText()
+    {
+        livesText.text = "Lives: " + lives.ToString();
+        if (lives <= 0)
+        {
+            winText.text = "You couldn't pass Logan Rich's Game";
+            Destroy(gameObject);
+        }
+    }
 }

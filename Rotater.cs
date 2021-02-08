@@ -10,3 +10,4 @@ public class Rotater : MonoBehaviour
         transform.Rotate(new Vector3(15, 30, 35) * Time.deltaTime);
     }
 }
+
